@@ -1,6 +1,6 @@
 import unittest
 
-from sorting import lomuto_partition
+from sorting import lomuto_partition, quicksort
 
 __author__ = 'smaldon'
 
@@ -52,3 +52,14 @@ class LomutoPartition(unittest.TestCase):
 
         self.assertEqual(new_pivot, 3)
         self.assertEqual(arr, [0, 0, 0, 0])
+
+
+class TestQuickSort(unittest.TestCase):
+    def test_returns_empty_list_for_empty_seq_input(self):
+        self.assertEqual([], quicksort([]))
+
+    def test_returns_singleton_list_for_singleton_seq_input(self):
+        self.assertEqual([1], quicksort([1]))
+
+    def test_orders_two_element_list(self):
+        self.assertEqual([1, 2], quicksort([2, 1]))

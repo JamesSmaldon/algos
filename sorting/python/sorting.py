@@ -20,3 +20,15 @@ def lomuto_partition(seq, start, end):
     seq[i], seq[end] = seq[end], seq[i]
 
     return i
+
+def quicksort(seq):
+    def quicksort_inner(seq, start, end):
+        if start < end:
+            pivot = lomuto_partition(seq, start, end)
+
+            quicksort_inner(seq, 0, pivot-1)
+            quicksort_inner(seq, pivot+1, end)
+
+        return seq
+
+    return quicksort_inner(seq, 0, len(seq)-1)
