@@ -79,3 +79,49 @@ QUnit.test("TrackedArray.gt increments comparison and get counts", function(asse
     assert.ok(a.gets == 2);
 });
 
+QUnit.test("TrackedArray push operation", function(assert) {
+    var a = new DS.TrackedArray();
+
+    a.push(1);
+    a.push(2);
+    a.push(3);
+
+    assert.deepEqual(a.asArray(), [1,2,3]);
+
+    a.prev_op();
+    assert.deepEqual(a.asArray(), [1,2]);
+    a.prev_op();
+    assert.deepEqual(a.asArray(), [1]);
+    a.prev_op();
+    assert.deepEqual(a.asArray(), []);
+});
+
+QUnit.test("TrackedArray pop operation", function(assert) {
+    var a = new DS.TrackedArray([1,2,3]);
+
+    a.pop();
+    a.pop();
+    a.pop();
+
+    assert.deepEqual(a.asArray(), []);
+
+    a.prev_op();
+    a.prev_op();
+    a.prev_op();
+
+    assert.deepEqual(a.asArray(), [1,2,3]);
+});
+
+QUnit.test("TrackedArray swap operation", function(assert) {
+    var a = new DS.TrackedArray([1,2,3]);
+
+    a.swap(0,1);
+    a.swap(1,2);
+
+    assert.deepEqual(a.asArray(), [2,3,1]);
+
+    a.prev_op();
+    a.prev_op();
+
+    assert.deepEqual(a.asArray(), [1,2,3]);
+});
