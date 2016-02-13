@@ -91,7 +91,7 @@ function init_chart() {
     var nums_to_sort = DS.loop.range(0,50);
     shuffle(nums_to_sort);
 
-    arr = Algos.Sorting.bubble_sort(new DS.TrackedArray(nums_to_sort));
+    arr = Algos.Sorting.quick_sort(new DS.TrackedArray(nums_to_sort), Algos.Sorting.lomuto_partition);
     arr.initial_state();
 
     var ctx = document.getElementById("bubble_sort").getContext("2d");

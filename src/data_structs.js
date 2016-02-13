@@ -199,3 +199,11 @@ DS.TrackedArray.prototype.gt = function(a_idx, b_idx) {
     return this.at(a_idx) > this.at(b_idx);
 }
 
+DS.TrackedArray.prototype.lteq = function(a_idx, b_idx) {
+    if (!this.valid_idx(a_idx) || !this.valid_idx(b_idx))
+        throw "Invalid index for lteq: " + a_idx + "," + b_idx;
+
+    this.comparisons++;
+
+    return this.at(a_idx) <= this.at(b_idx);
+}
