@@ -18,5 +18,3 @@ Algos.Sorting.bubble_sort = function(seq){
 
     return work_seq;
 }
-
-

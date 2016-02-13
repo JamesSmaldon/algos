@@ -38,7 +38,6 @@ QUnit.test("TrackedArray.length holds length of array.", function(assert) {
 
 QUnit.test("TrackedArray.at behaves like array[].", function(assert) {
     var a = new DS.TrackedArray([1,2,5]);
-    console.log(a.asArray());
 
     assert.ok(a.at(0) == 1);
     assert.ok(a.at(1) == 2);
