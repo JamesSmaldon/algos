@@ -20,6 +20,19 @@ DS.loop.until_false = function(f){
     DS.loop.until(notf);
 }
 
+DS.loop.range = function(start, end) {
+    var result = [];
+
+    var i = start;
+    var f = function() {
+        result.push(i);
+        return ++i == end;
+    };
+
+    DS.loop.until(f);
+
+    return result;
+}
 
 DS.TrackedArray = function(values) {
     if (typeof values !== "undefined")
