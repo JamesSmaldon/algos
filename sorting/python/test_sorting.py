@@ -63,3 +63,8 @@ class TestQuickSort(unittest.TestCase):
 
     def test_orders_two_element_list(self):
         self.assertEqual([1, 2], quicksort([2, 1]))
+
+    def test_sorts_lists(self):
+        self.assertEqual([1, 2, 3, 4, 5], quicksort([3, 4, 1, 2, 5]))
+        self.assertEqual(range(0, 100), quicksort(list(reversed(range(0, 100)))))
+
