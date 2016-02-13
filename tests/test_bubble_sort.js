@@ -1,11 +1,7 @@
 QUnit.test("BubbleSort.sort", function(assert) {
-    var a = new DS.TrackedArray([1,2,3,4]);
-    var bsort = new Algos.Sorting.BubbleSort(a);
+    var sorted = Algos.Sorting.bubble_sort(new DS.TrackedArray([1,2,3,4]));
+    assert.deepEqual(sorted.asArray(), [1,2,3,4]);
 
-    var sorted = bsort.sort();
-    assert.deepEqual(sorted, new DS.TrackedArray([1,2,3,4]));
-
-    bsort = new Algos.Sorting.BubbleSort(new DS.TrackedArray([4,3,2,1]));
-    sorted = bsort.sort();
-    assert.deepEqual(sorted, new DS.TrackedArray([1,2,3,4]));
+    sorted = Algos.Sorting.bubble_sort(new DS.TrackedArray([4,3,2,1]));
+    assert.deepEqual(sorted.asArray(), [1,2,3,4]);
 });

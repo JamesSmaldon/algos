@@ -73,3 +73,10 @@ QUnit.test("TrackedArray.gt", function(assert) {
     });
 });
 
+QUnit.test("TrackedArray.gt increments comparison and get counts", function(assert) {
+    var a = new DS.TrackedArray([1,2,3,4]);
+    a.gt(0,1);
+    assert.ok(a.comparisons == 1);
+    assert.ok(a.gets == 2);
+});
+
