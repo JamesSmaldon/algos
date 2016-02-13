@@ -1,6 +1,25 @@
 //Data structures namespace
 var DS = DS || {};
 
+DS.loop = DS.loop || {};
+
+DS.loop.until = function(f){
+    var ret = false;
+
+    while (!ret)
+    {
+        ret = f();
+    }
+}
+
+DS.loop.until_false = function(f){
+    var notf = function() { 
+        var ret = f();
+        return !ret; 
+    };
+    DS.loop.until(notf);
+}
+
 
 DS.TrackedArray = function(values) {
     if (typeof values !== "undefined")
@@ -21,10 +40,9 @@ DS.TrackedArray = function(values) {
     this.current_op = -1;
 }
 
-DS.TrackedArray.prototype.next_op = function() {
+DS.TrackedArray.prototype.next_state = function() {
     if (this.current_op != (this.operations.length-1))
     {
-        console.log("doing op");
         this.current_op++;
         var op = this.operations[this.current_op];
         op.doOp(this);
@@ -34,11 +52,10 @@ DS.TrackedArray.prototype.next_op = function() {
     return false;
 }
 
-DS.TrackedArray.prototype.prev_op = function() {
+DS.TrackedArray.prototype.prev_state = function() {
     if (this.current_op >= 0)
     {
         var op = this.operations[this.current_op];
-        console.log(op);
         op.undoOp(this);
         this.current_op--;
 
@@ -46,6 +63,16 @@ DS.TrackedArray.prototype.prev_op = function() {
     }
 
     return false;
+}
+
+DS.TrackedArray.prototype.initial_state = function() {
+    var that=this;
+    DS.loop.until_false(function(){ return that.prev_state(); });
+}
+
+DS.TrackedArray.prototype.last_state = function() {
+    var that=this;
+    DS.loop.until_false(function(){ return that.next_state(); });
 }
 
 DS.TrackedArray.Operation = function(do_f, do_f_args, undo_f, undo_f_args) {
@@ -85,7 +112,7 @@ DS.TrackedArray.prototype.push = function(val) {
     var op = new DS.TrackedArray.Operation(do_f, [val], undo_f, []);
     this.operations.push(op);
 
-    this.next_op();
+    this.next_state();
 }
 
 
@@ -110,7 +137,7 @@ DS.TrackedArray.prototype.pop = function() {
     var op = new DS.TrackedArray.Operation(do_f, [], undo_f, []);
     this.operations.push(op);
 
-    this.next_op();
+    this.next_state();
 }
 
 DS.TrackedArray.prototype.asArray = function() {
@@ -143,7 +170,7 @@ DS.TrackedArray.prototype.swap = function(a_idx, b_idx) {
 
     var op = new DS.TrackedArray.Operation(do_f, [a_idx, b_idx], undo_f, [a_idx, b_idx]);
     this.operations.push(op);
-    this.next_op();
+    this.next_state();
 }
 
 DS.TrackedArray.prototype.copy = function() {
@@ -158,3 +185,4 @@ DS.TrackedArray.prototype.gt = function(a_idx, b_idx) {
 
     return this.at(a_idx) > this.at(b_idx);
 }
+

@@ -88,11 +88,11 @@ QUnit.test("TrackedArray push operation", function(assert) {
 
     assert.deepEqual(a.asArray(), [1,2,3]);
 
-    a.prev_op();
+    a.prev_state();
     assert.deepEqual(a.asArray(), [1,2]);
-    a.prev_op();
+    a.prev_state();
     assert.deepEqual(a.asArray(), [1]);
-    a.prev_op();
+    a.prev_state();
     assert.deepEqual(a.asArray(), []);
 });
 
@@ -105,9 +105,9 @@ QUnit.test("TrackedArray pop operation", function(assert) {
 
     assert.deepEqual(a.asArray(), []);
 
-    a.prev_op();
-    a.prev_op();
-    a.prev_op();
+    a.prev_state();
+    a.prev_state();
+    a.prev_state();
 
     assert.deepEqual(a.asArray(), [1,2,3]);
 });
@@ -120,8 +120,50 @@ QUnit.test("TrackedArray swap operation", function(assert) {
 
     assert.deepEqual(a.asArray(), [2,3,1]);
 
-    a.prev_op();
-    a.prev_op();
+    a.prev_state();
+    a.prev_state();
 
     assert.deepEqual(a.asArray(), [1,2,3]);
+});
+
+QUnit.test("TrackedArray initial and last state", function(assert) {
+    var a = new DS.TrackedArray();
+
+    a.push(1);
+    a.push(2);
+    a.push(3);
+
+    assert.deepEqual(a.asArray(), [1,2,3]);
+
+    a.initial_state();
+
+    assert.deepEqual(a.asArray(), []);
+
+    a.last_state();
+
+    assert.deepEqual(a.asArray(), [1,2,3]);
+});
+
+QUnit.test("loop.until loops until the function returns true", function(assert) {
+    var x = 0;
+    var f = function() {
+        x++;
+        return x == 5;
+    };
+
+    DS.loop.until(f);
+
+    assert.ok(x == 5);
+});
+
+QUnit.test("loop.until_false loops until the function returns false", function(assert) {
+    var x = 0;
+    var f = function() {
+        x++;
+        return x < 5;
+    }
+
+    DS.loop.until_false(f);
+
+    assert.ok(x == 5);
 });
