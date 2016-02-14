@@ -90,10 +90,7 @@ function reset() {
     update_chart(chart, arr);
 }
 
-function do_bubble_sort() {
-    arr = Algos.Sorting.bubble_sort(new DS.TrackedArray(nums_to_sort));
-    arr.initial_state();
-
+function create_chart(arr) {
     var ctx = document.getElementById("sort_canvas").getContext("2d");
     data = chart_data(arr)
 
@@ -101,15 +98,16 @@ function do_bubble_sort() {
     chart = new Chart(ctx).Bar(data);
 }
 
+function do_bubble_sort() {
+    arr = Algos.Sorting.bubble_sort(new DS.TrackedArray(nums_to_sort));
+    arr.initial_state();
+    create_chart(arr);
+}
+
 function do_quick_sort() {
     arr = Algos.Sorting.quick_sort(new DS.TrackedArray(nums_to_sort), Algos.Sorting.lomuto_partition);
     arr.initial_state();
-
-    var ctx = document.getElementById("sort_canvas").getContext("2d");
-    data = chart_data(arr)
-
-    Chart.defaults.global.animation=false;
-    chart = new Chart(ctx).Bar(data);
+    create_chart(arr);
 }
 
 function algo_selectbox_changed() {
