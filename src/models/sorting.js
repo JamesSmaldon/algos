@@ -21,6 +21,9 @@ function shuffle(array) {
   return array;
 }
 
+var nums_to_sort = DS.loop.range(0,50);
+shuffle(nums_to_sort);
+
 function chart_data(seq) {
     var data = {
         labels: DS.loop.range(0, 50),
@@ -87,20 +90,56 @@ function reset() {
     update_chart(chart, arr);
 }
 
-function init_chart() {
-    var nums_to_sort = DS.loop.range(0,50);
-    shuffle(nums_to_sort);
-
-    arr = Algos.Sorting.quick_sort(new DS.TrackedArray(nums_to_sort), Algos.Sorting.lomuto_partition);
+function do_bubble_sort() {
+    arr = Algos.Sorting.bubble_sort(new DS.TrackedArray(nums_to_sort));
     arr.initial_state();
 
-    var ctx = document.getElementById("bubble_sort").getContext("2d");
+    var ctx = document.getElementById("sort_canvas").getContext("2d");
     data = chart_data(arr)
 
     Chart.defaults.global.animation=false;
     chart = new Chart(ctx).Bar(data);
 }
 
+function do_quick_sort() {
+    arr = Algos.Sorting.quick_sort(new DS.TrackedArray(nums_to_sort), Algos.Sorting.lomuto_partition);
+    arr.initial_state();
+
+    var ctx = document.getElementById("sort_canvas").getContext("2d");
+    data = chart_data(arr)
+
+    Chart.defaults.global.animation=false;
+    chart = new Chart(ctx).Bar(data);
+}
+
+function algo_selectbox_changed() {
+    if (this.value == "bubble") {
+        do_bubble_sort();
+    }
+    else if (this.value == "quick") {
+        do_quick_sort();
+    }
+}
+
+function init_algo_selectbox(){
+    var select_box = document.getElementById("algo_select");
+    var options = [["Bubble Sort", "bubble"], ["Quick Sort", "quick"]];
+
+    for (var i=0; i<options.length; ++i){
+        var opt = document.createElement("option");
+        opt.value = options[i][1];
+        opt.text = options[i][0];
+        select_box.appendChild(opt);
+    }
+
+    select_box.onchange = algo_selectbox_changed;
+}
+
+function init_chart() {
+    do_bubble_sort();
+}
+
 window.onload = function () {
+    init_algo_selectbox();
     init_chart();
 }
