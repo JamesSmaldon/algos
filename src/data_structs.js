@@ -104,9 +104,6 @@ DS.TrackedArray.Operation.prototype.undoOp = function(tracked_array) {
     this.undo_f.apply(this, [tracked_array].concat(this.undo_f_args).concat([this.state]));
 }
 
-DS.TrackedArray.Operation.reverse = function(op) {
-}
-
 DS.TrackedArray.prototype.push = function(val) {
     var do_f = function(arr, val) {
         arr._data.push(val);
@@ -155,6 +152,10 @@ DS.TrackedArray.prototype.pop = function() {
 
 DS.TrackedArray.prototype.asArray = function() {
     return this._data.slice();
+}
+
+DS.TrackedArray.prototype.reverse = function() {
+    this._data.reverse(); 
 }
 
 DS.TrackedArray.prototype.at = function(index) {

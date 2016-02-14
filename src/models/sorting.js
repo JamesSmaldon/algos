@@ -21,9 +21,6 @@ function shuffle(array) {
   return array;
 }
 
-var nums_to_sort = DS.loop.range(0,50);
-shuffle(nums_to_sort);
-
 function chart_data(seq) {
     var data = {
         labels: DS.loop.range(0, 50),
@@ -99,13 +96,13 @@ function create_chart(arr) {
 }
 
 function do_bubble_sort() {
-    arr = Algos.Sorting.bubble_sort(new DS.TrackedArray(nums_to_sort));
+    arr = Algos.Sorting.bubble_sort(arr);
     arr.initial_state();
     create_chart(arr);
 }
 
 function do_quick_sort() {
-    arr = Algos.Sorting.quick_sort(new DS.TrackedArray(nums_to_sort), Algos.Sorting.lomuto_partition);
+    arr = Algos.Sorting.quick_sort(arr, Algos.Sorting.lomuto_partition);
     arr.initial_state();
     create_chart(arr);
 }
@@ -117,6 +114,27 @@ function algo_selectbox_changed() {
     else if (this.value == "quick") {
         do_quick_sort();
     }
+}
+
+function data_selectbox_changed() {
+    var nums_to_sort = [];
+
+    if (this.value == "random") {
+        nums_to_sort = DS.loop.range(0,50);
+        shuffle(nums_to_sort);
+    }
+    else if (this.value == "reversed") {
+        nums_to_sort = DS.loop.range(0,50);
+        nums_to_sort.reverse();
+    }
+    else if (this.value == "sorted") {
+        nums_to_sort = DS.loop.range(0,50);
+    }
+
+    arr = new DS.TrackedArray(nums_to_sort);
+
+    var algo_selectbox = document.getElementById("algo_select");
+    algo_selectbox.onchange();
 }
 
 function init_algo_selectbox(){
@@ -131,13 +149,27 @@ function init_algo_selectbox(){
     }
 
     select_box.onchange = algo_selectbox_changed;
+    return select_box;
 }
 
-function init_chart() {
-    do_bubble_sort();
+function init_data_selectbox(){
+    var select_box = document.getElementById("data_select");
+    var options = [["Random", "random"], ["Sorted", "sorted"], ["Reversed", "reversed"]];
+
+    for (var i=0; i<options.length; ++i){
+        var opt = document.createElement("option");
+        opt.value = options[i][1];
+        opt.text = options[i][0];
+        select_box.appendChild(opt);
+    }
+
+    select_box.onchange = data_selectbox_changed;
+    return select_box;
 }
 
 window.onload = function () {
-    init_algo_selectbox();
-    init_chart();
+    var data_selectbox = init_data_selectbox();
+    var algo_selectbox = init_algo_selectbox();
+    data_selectbox.onchange();
+    algo_selectbox.onchange(); 
 }

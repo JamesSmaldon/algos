@@ -36,7 +36,7 @@ Algos.Sorting.lomuto_partition = function(seq, lo, hi){
 
 Algos.Sorting.quick_sort_ = function(seq, partition_func, lo, hi) {
     if (lo < hi) {
-        p = partition_func(seq, lo, hi);
+        var p = partition_func(seq, lo, hi);
         this.quick_sort_(seq, partition_func, lo, p-1);
         this.quick_sort_(seq, partition_func, p+1, hi);
     } 
