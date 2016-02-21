@@ -62,37 +62,6 @@ QUnit.test("TrackedArray.swap", function(assert) {
     assert.deepEqual([2,1,3,4], a.asArray());
 });
 
-QUnit.test("TrackedArray.gt", function(assert) {
-    var a = new DS.TrackedArray([1,2,3,4]);
-    assert.ok(a.gt(1,0));
-    assert.notOk(a.gt(0,1));
-    assert.notOk(a.gt(0,0));
-    assert.throws(function () {
-        a.gt(-1, 0);
-    });
-});
-
-QUnit.test("TrackedArray.gt increments comparison and get counts", function(assert) {
-    var a = new DS.TrackedArray([1,2,3,4]);
-    a.gt(0,1);
-    assert.ok(a.comparisons == 1);
-    assert.ok(a.gets == 2);
-});
-
-QUnit.test("TrackedArray.lteq", function(assert) {
-    var a = new DS.TrackedArray([1,2,3,4]);
-    assert.ok(a.lteq(1,2));
-    assert.ok(a.lteq(1,1));
-    assert.notOk(a.lteq(2,1));
-});
-
-QUnit.test("TrackedArray.lteq increments comparion and get counts", function(assert) { 
-    var a = new DS.TrackedArray([1,2,3,4]);
-    a.lteq(0,1);
-    assert.ok(a.comparisons == 1);
-    assert.ok(a.gets == 2);
-});
-
 QUnit.test("TrackedArray.reverse reverses the array", function(assert) {
     var a = new DS.TrackedArray([1,2,3,4]);
     a.reverse();

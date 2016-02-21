@@ -23,7 +23,7 @@ function shuffle(array) {
 
 function chart_data(seq) {
     var data = {
-        labels: DS.loop.range(0, 50),
+        labels: func_utils.range(0, 50),
 
         datasets: [
             {
@@ -96,13 +96,15 @@ function create_chart(arr) {
 }
 
 function do_bubble_sort() {
-    arr = Algos.Sorting.bubble_sort(arr);
+    var cmp = new DS.CountedComparison();
+    arr = Algos.Sorting.bubble_sort(arr, cmp);
     arr.initial_state();
     create_chart(arr);
 }
 
 function do_quick_sort() {
-    arr = Algos.Sorting.quick_sort(arr, Algos.Sorting.lomuto_partition);
+    var cmp = new DS.CountedComparison();
+    arr = Algos.Sorting.quick_sort(arr, cmp, Algos.Sorting.lomuto_partition);
     arr.initial_state();
     create_chart(arr);
 }
@@ -120,15 +122,15 @@ function data_selectbox_changed() {
     var nums_to_sort = [];
 
     if (this.value == "random") {
-        nums_to_sort = DS.loop.range(0,50);
+        nums_to_sort = func_utils.range(0,50);
         shuffle(nums_to_sort);
     }
     else if (this.value == "reversed") {
-        nums_to_sort = DS.loop.range(0,50);
+        nums_to_sort = func_utils.range(0,50);
         nums_to_sort.reverse();
     }
     else if (this.value == "sorted") {
-        nums_to_sort = DS.loop.range(0,50);
+        nums_to_sort = func_utils.range(0,50);
     }
 
     arr = new DS.TrackedArray(nums_to_sort);

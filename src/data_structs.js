@@ -12,7 +12,6 @@ DS.TrackedArray = function(values) {
     }
 
     this.length = this._data.length;
-    this.comparisons = 0;
     this.swaps = 0;
     this.gets = 0;
 
@@ -156,22 +155,4 @@ DS.TrackedArray.prototype.swap = function(a_idx, b_idx) {
 
 DS.TrackedArray.prototype.copy = function() {
     return new DS.TrackedArray(this._data.slice());
-}
-
-DS.TrackedArray.prototype.gt = function(a_idx, b_idx) {
-    if (!this.valid_idx(a_idx) || !this.valid_idx(b_idx))
-        throw "Invalid index for gt: " + a_idx + "," + b_idx;
-
-    this.comparisons++;
-
-    return this.at(a_idx) > this.at(b_idx);
-}
-
-DS.TrackedArray.prototype.lteq = function(a_idx, b_idx) {
-    if (!this.valid_idx(a_idx) || !this.valid_idx(b_idx))
-        throw "Invalid index for lteq: " + a_idx + "," + b_idx;
-
-    this.comparisons++;
-
-    return this.at(a_idx) <= this.at(b_idx);
 }
