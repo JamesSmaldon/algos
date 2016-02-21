@@ -1,39 +1,6 @@
 //Data structures namespace
 var DS = DS || {};
 
-DS.loop = DS.loop || {};
-
-DS.loop.until = function(f){
-    var ret = false;
-
-    while (!ret)
-    {
-        ret = f();
-    }
-}
-
-DS.loop.until_false = function(f){
-    var notf = function() { 
-        var ret = f();
-        return !ret; 
-    };
-    DS.loop.until(notf);
-}
-
-DS.loop.range = function(start, end) {
-    var result = [];
-
-    var i = start;
-    var f = function() {
-        result.push(i);
-        return ++i == end;
-    };
-
-    DS.loop.until(f);
-
-    return result;
-}
-
 DS.TrackedArray = function(values) {
     if (typeof values !== "undefined")
     {
@@ -80,12 +47,12 @@ DS.TrackedArray.prototype.prev_state = function() {
 
 DS.TrackedArray.prototype.initial_state = function() {
     var that=this;
-    DS.loop.until_false(function(){ return that.prev_state(); });
+    func_utils.until_false(function(){ return that.prev_state(); });
 }
 
 DS.TrackedArray.prototype.last_state = function() {
     var that=this;
-    DS.loop.until_false(function(){ return that.next_state(); });
+    func_utils.until_false(function(){ return that.next_state(); });
 }
 
 DS.TrackedArray.Operation = function(do_f, do_f_args, undo_f, undo_f_args) {

@@ -164,26 +164,3 @@ QUnit.test("TrackedArray initial and last state", function(assert) {
     assert.deepEqual(a.asArray(), [1,2,3]);
 });
 
-QUnit.test("loop.until loops until the function returns true", function(assert) {
-    var x = 0;
-    var f = function() {
-        x++;
-        return x == 5;
-    };
-
-    DS.loop.until(f);
-
-    assert.ok(x == 5);
-});
-
-QUnit.test("loop.until_false loops until the function returns false", function(assert) {
-    var x = 0;
-    var f = function() {
-        x++;
-        return x < 5;
-    }
-
-    DS.loop.until_false(f);
-
-    assert.ok(x == 5);
-});
