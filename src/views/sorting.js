@@ -1,6 +1,7 @@
 var arr;
 var chart;
 var animate_timer;
+var iter_ops;
 
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
@@ -32,7 +33,7 @@ function chart_data(seq) {
                 strokeColor: "rgba(220,220,220,0.0)",
                 highlightFill: "rgba(220,220,220,0.75)",
                 highlightStroke: "rgba(220,220,220,1)",
-                data: seq.asArray()
+                data: seq
             },
         ]
     };
@@ -41,7 +42,7 @@ function chart_data(seq) {
 }
 
 function update_chart(chart, seq) {
-    var data = seq.asArray();
+    var data = seq;
     for (var i=0; i<data.length; ++i)
     {
         chart.datasets[0].bars[i].value = data[i];
@@ -50,13 +51,13 @@ function update_chart(chart, seq) {
 }
 
 function next_step() {
-    var result = arr.next_state();
+    var result = iter_ops.next(arr);
     update_chart(chart, arr);
     return result;
 }
 
 function prev_step() {
-    arr.prev_state();
+    iter_ops.prev(arr);
     update_chart(chart, arr);
 }
 
@@ -83,7 +84,7 @@ function stop_animate() {
 }
 
 function reset() {
-    arr.initial_state();
+    iter_ops.initial_state(arr);
     update_chart(chart, arr);
 }
 
@@ -97,15 +98,19 @@ function create_chart(arr) {
 
 function do_bubble_sort() {
     var cmp = new DS.CountedComparison();
-    arr = Algos.Sorting.bubble_sort(arr, cmp);
-    arr.initial_state();
+    var ops_tracker = new Ops.OpTracker();
+    arr = Algos.Sorting.bubble_sort(ops_tracker, arr, cmp);
+    iter_ops = new Ops.IterOps(ops_tracker.operations);
+    iter_ops.initial_state(arr);
     create_chart(arr);
 }
 
 function do_quick_sort() {
     var cmp = new DS.CountedComparison();
-    arr = Algos.Sorting.quick_sort(arr, cmp, Algos.Sorting.lomuto_partition);
-    arr.initial_state();
+    var ops_tracker = new Ops.OpTracker();
+    arr = Algos.Sorting.quick_sort(ops_tracker, arr, cmp, Algos.Sorting.lomuto_partition);
+    iter_ops = new Ops.IterOps(ops_tracker.operations);
+    iter_ops.initial_state(arr);
     create_chart(arr);
 }
 
@@ -133,7 +138,8 @@ function data_selectbox_changed() {
         nums_to_sort = func_utils.range(0,50);
     }
 
-    arr = new DS.TrackedArray(nums_to_sort);
+    arr = nums_to_sort.slice(0);
+    Ops.tag(arr, 'array');
 
     var algo_selectbox = document.getElementById("algo_select");
     algo_selectbox.onchange();
@@ -170,8 +176,9 @@ function init_data_selectbox(){
 }
 
 window.onload = function () {
+    Ops.set_op_handler('array', 'swap', DS.array_swap_handler());
+
     var data_selectbox = init_data_selectbox();
     var algo_selectbox = init_algo_selectbox();
     data_selectbox.onchange();
-    algo_selectbox.onchange(); 
 }
