@@ -14,10 +14,7 @@ DS.array_swap_handler = function() {
         }
     };
 
-    var undo_f = function(arr, a_idx, b_idx) {
-        this.do_f(arr, b_idx, a_idx);
-    };
-
-    return new Ops.Handler(do_f, undo_f);
+    // Undoing a swap just means swapping the same indices again.
+    return new Ops.Handler(do_f, do_f);
 }
 

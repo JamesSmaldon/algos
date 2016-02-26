@@ -1,4 +1,5 @@
 var arr;
+var chart_data;
 var chart;
 var animate_timer;
 var iter_ops;
@@ -22,43 +23,26 @@ function shuffle(array) {
   return array;
 }
 
-function chart_data(seq) {
-    var data = {
-        labels: func_utils.range(0, 50),
-
-        datasets: [
-            {
-                label: "My First dataset",
-                fillColor: "rgba(0,0,220,0.9)",
-                strokeColor: "rgba(220,220,220,0.0)",
-                highlightFill: "rgba(220,220,220,0.75)",
-                highlightStroke: "rgba(220,220,220,1)",
-                data: seq
-            },
-        ]
-    };
-
-    return data;
-}
-
-function update_chart(chart, seq) {
-    var data = seq;
-    for (var i=0; i<data.length; ++i)
-    {
-        chart.datasets[0].bars[i].value = data[i];
-    }
-    chart.update();
-}
-
 function next_step() {
-    var result = iter_ops.next(arr);
-    update_chart(chart, arr);
-    return result;
+    var op = iter_ops.next(arr);
+    if (op !== null) {
+        Ops.doOp(arr, op);
+        Ops.doOp(chart_data, op);
+        chart.render(arr, chart_data);
+        return true;
+    }
+    return false;
 }
 
 function prev_step() {
-    iter_ops.prev(arr);
-    update_chart(chart, arr);
+    var op = iter_ops.prev(arr);
+    if (op !== null) {
+        Ops.doOp(arr, op);
+        Ops.doOp(chart_data, op);
+        chart.render(arr, chart_data);
+        return true;
+    }
+    return false;
 }
 
 function start_animate() {
@@ -85,15 +69,15 @@ function stop_animate() {
 
 function reset() {
     iter_ops.initial_state(arr);
-    update_chart(chart, arr);
+    iter_ops.initial_state(chart_data);
+    chart.render(arr, chart_data);
 }
 
 function create_chart(arr) {
     var ctx = document.getElementById("sort_canvas").getContext("2d");
-    data = chart_data(arr)
-
-    Chart.defaults.global.animation=false;
-    chart = new Chart(ctx).Bar(data);
+    chart = new View.AlgoChart(ctx, 600, 600);
+    chart_data = new View.AlgoChartData();
+    chart.render(arr, chart_data);
 }
 
 function do_bubble_sort() {
@@ -114,12 +98,24 @@ function do_quick_sort() {
     create_chart(arr);
 }
 
+function do_insertion_sort() {
+    var cmp = new DS.CountedComparison();
+    var ops_tracker = new Ops.OpTracker();
+    arr = Algos.Sorting.insertion_sort(ops_tracker, arr, cmp);
+    iter_ops = new Ops.IterOps(ops_tracker.operations);
+    iter_ops.initial_state(arr);
+    create_chart(arr);
+}
+
 function algo_selectbox_changed() {
     if (this.value == "bubble") {
         do_bubble_sort();
     }
     else if (this.value == "quick") {
         do_quick_sort();
+    }
+    else if (this.value == "insertion") {
+        do_insertion_sort();
     }
 }
 
@@ -147,7 +143,7 @@ function data_selectbox_changed() {
 
 function init_algo_selectbox(){
     var select_box = document.getElementById("algo_select");
-    var options = [["Bubble Sort", "bubble"], ["Quick Sort", "quick"]];
+    var options = [["Bubble Sort", "bubble"], ["Quick Sort", "quick"], ["Insertion Sort", "insertion"]];
 
     for (var i=0; i<options.length; ++i){
         var opt = document.createElement("option");
@@ -177,6 +173,9 @@ function init_data_selectbox(){
 
 window.onload = function () {
     Ops.set_op_handler('array', 'swap', DS.array_swap_handler());
+    Ops.set_op_handler('chartdata', 'swap', View.AlgoChartData.swap_handler());
+    Ops.set_op_handler('chartdata', 'focus', View.AlgoChartData.set_focus_handler());
+    Ops.set_op_handler('chartdata', 'unfocus', View.AlgoChartData.unset_focus_handler());
 
     var data_selectbox = init_data_selectbox();
     var algo_selectbox = init_algo_selectbox();

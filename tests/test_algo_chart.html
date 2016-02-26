@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <title>AlgoChart Test</title>
+        <script src="../src/func_utils.js"></script>
+        <script src="../src/views/sort_visualiser.js"></script>
+    </head>
+    <body>
+        <canvas id="chart" width="600" height="600"></canvas>
+        <button type="button" onclick="handle_click()">Click Me</button>
+        <script type="text/javascript">
+            var seq = func_utils.range(1, 51);
+            var canvas = document.getElementById('chart');
+            var ctx = canvas.getContext('2d');
+            var chart = new View.AlgoChart(ctx, 600, 600, seq);
+            var rdata = new View.AlgoChartData();
+            rdata.set_focus(10);
+            chart.render(seq,rdata);
+
+            function handle_click() {
+                rdata.handle_swap(10, 11);
+                chart.render(seq, rdata);
+            }
+        </script>
+    </body>
+</html>
