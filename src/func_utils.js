@@ -1,6 +1,6 @@
-var func_utils = func_utils || {};
+var fu = fu || {};
 
-func_utils.until = function(f){
+fu.until = function(f){
     var ret = false;
 
     while (!ret)
@@ -9,15 +9,15 @@ func_utils.until = function(f){
     }
 }
 
-func_utils.not = function(f){
+fu.not = function(f){
     return function() { return !f() };
 }
 
-func_utils.until_false = function(f){
+fu.until_false = function(f){
     this.until(this.not(f));
 }
 
-func_utils.range = function(start, end) {
+fu.range = function(start, end) {
     var result = [];
 
     var i = start;
@@ -31,3 +31,50 @@ func_utils.range = function(start, end) {
     return result;
 }
 
+fu.empty = function(arr) {
+    return [arr.length === 0];
+}
+
+fu.x_xs = function(arr) {
+    var xs = arr.slice(0);
+    var x = arr_copy.shift();
+    return [arr.length > 0, x, xs]; 
+}
+
+fu.zero = function(val) {
+    return [val === 0];
+}
+
+fu.n = function(val) {
+    return [val !== 0, val];
+}
+
+fu.match = function(match_specs, val) {
+    for (var i=0; i<match_specs.length; ++i) {
+        var match = match_specs[i][0](val);
+        var matched = match[0];
+        if (matched) {
+            match.shift();
+            return match_specs[i][1].apply(null, match);
+        }
+    }
+
+    throw "No matches found.";
+}
+
+fu.fold = function(f, accum, xs) {
+    return fu.match([[fu.empty, function()     { return accum; }],
+                     [fu.x_xs,  function(x, xs){ return fu.fold(f, f(accum, x), xs); }]],
+                     xs);
+} 
+
+fu.repeat = function(count, val) {
+    var repeat_ = function(count, val, result) {
+        return fu.match([[fu.zero, function() { return result; }],
+                         [fu.n,    function(n){ result.unshift(val);
+                                                return repeat_(count-1, val, result); }]],
+                         count);
+    }
+
+    return repeat_(count, val, []);
+}

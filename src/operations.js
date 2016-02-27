@@ -78,6 +78,10 @@ Ops.unfocus = function(idx) {
     return { 'type': 'unfocus', 'args': [idx] };
 }
 
+Ops.finished = function(idx) {
+    return { 'type': 'finished', 'args': [idx] };
+}
+
 Ops.OpTracker = function() {
     this.operations = [];
 }
@@ -119,7 +123,7 @@ Ops.IterOps.prototype.prev = function() {
 
 Ops.IterOps.prototype.initial_state = function(a_thing) {
     var that=this;
-    func_utils.until_false(function(){
+    fu.until_false(function(){
         op = that.prev();
         if (op !== null) {
             Ops.doOp(a_thing, op);
@@ -131,7 +135,7 @@ Ops.IterOps.prototype.initial_state = function(a_thing) {
 
 Ops.IterOps.prototype.last_state = function(a_thing) {
     var that=this;
-    func_utils.until_false(function(){ 
+    fu.until_false(function(){ 
         op = that.next();
         if (op !== null) {
             Ops.doOp(a_thing, op);

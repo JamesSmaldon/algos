@@ -3,6 +3,7 @@ var chart_data;
 var chart;
 var animate_timer;
 var iter_ops;
+var button_down_timer;
 
 function shuffle(array) {
   var currentIndex = array.length, temporaryValue, randomIndex;
@@ -52,7 +53,7 @@ function start_animate() {
             stop_animate();
         }
     };
-    animate_timer = setInterval(f, 5);
+    animate_timer = setInterval(f, 20);
     document.getElementById("start_button").disabled = true;
     document.getElementById("stop_button").disabled = false;
     document.getElementById("prev_step_button").disabled = true;
@@ -123,15 +124,15 @@ function data_selectbox_changed() {
     var nums_to_sort = [];
 
     if (this.value == "random") {
-        nums_to_sort = func_utils.range(0,50);
+        nums_to_sort = fu.range(0,50);
         shuffle(nums_to_sort);
     }
     else if (this.value == "reversed") {
-        nums_to_sort = func_utils.range(0,50);
+        nums_to_sort = fu.range(0,50);
         nums_to_sort.reverse();
     }
     else if (this.value == "sorted") {
-        nums_to_sort = func_utils.range(0,50);
+        nums_to_sort = fu.range(0,50);
     }
 
     arr = nums_to_sort.slice(0);
@@ -176,6 +177,7 @@ window.onload = function () {
     Ops.set_op_handler('chartdata', 'swap', View.AlgoChartData.swap_handler());
     Ops.set_op_handler('chartdata', 'focus', View.AlgoChartData.set_focus_handler());
     Ops.set_op_handler('chartdata', 'unfocus', View.AlgoChartData.unset_focus_handler());
+    Ops.set_op_handler('chartdata', 'finished', View.AlgoChartData.finished_handler());
 
     var data_selectbox = init_data_selectbox();
     var algo_selectbox = init_algo_selectbox();

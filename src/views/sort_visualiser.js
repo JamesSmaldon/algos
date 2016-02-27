@@ -3,7 +3,8 @@ var View = View || {}
 View.AlgoChartData = function(seq_len) {
     this.type = 'chartdata';
     this.focus = null; 
-    this.index_map = func_utils.range(0, seq_len);
+    this.index_map = fu.range(0, seq_len);
+    this.finished = fu.repeat(seq_len, false);
 }
 
 View.AlgoChartData.prototype.set_focus = function(idx) {
@@ -12,6 +13,14 @@ View.AlgoChartData.prototype.set_focus = function(idx) {
 
 View.AlgoChartData.prototype.unset_focus = function(idx) {
     this.focus = null;
+}
+
+View.AlgoChartData.prototype.set_finished = function(idx) {
+    this.finished[idx] = true;
+}
+
+View.AlgoChartData.prototype.set_unfinished = function(idx) {
+    this.finished[idx] = false; 
 }
 
 View.AlgoChartData.prototype.handle_swap = function(a_idx, b_idx) {
@@ -31,6 +40,11 @@ View.AlgoChartData.unset_focus_handler = function () {
 View.AlgoChartData.swap_handler = function () {
     return new Ops.ObjHandler(View.AlgoChartData.prototype.handle_swap, 
                             View.AlgoChartData.prototype.handle_swap);    
+}
+
+View.AlgoChartData.finished_handler = function () {
+    return new Ops.ObjHandler(View.AlgoChartData.prototype.set_finished,
+                                View.AlgoChartData.prototype.set_unfinished);
 }
 
 View.AlgoChart = function(ctx, width, height) {
@@ -62,12 +76,16 @@ View.AlgoChart.prototype.render = function(seq, chart_data) {
     for (var i=0; i<this.data.length; ++i){
         colour = 'grey';
 
+        if (chart_data.finished[i])
+            colour = 'green';
+
         if (chart_data.focus != null)
         {
             var fidx = chart_data.index_map[i];   
             if (fidx == chart_data.focus)
                 colour = 'red';
         } 
+
         this.render_bar(x, this.data[i], colour);
         x += this.bar_width + this.bar_sep_width;
     } 
