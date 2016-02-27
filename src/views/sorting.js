@@ -37,8 +37,8 @@ function next_step() {
 function prev_step() {
     var op = iter_ops.prev(arr);
     if (op !== null) {
-        Ops.doOp(arr, op);
-        Ops.doOp(chart_data, op);
+        Ops.undoOp(arr, op);
+        Ops.undoOp(chart_data, op);
         chart.render(arr, chart_data);
         return true;
     }
@@ -76,7 +76,7 @@ function reset() {
 function create_chart(arr) {
     var ctx = document.getElementById("sort_canvas").getContext("2d");
     chart = new View.AlgoChart(ctx, 600, 600);
-    chart_data = new View.AlgoChartData();
+    chart_data = new View.AlgoChartData(arr.length);
     chart.render(arr, chart_data);
 }
 

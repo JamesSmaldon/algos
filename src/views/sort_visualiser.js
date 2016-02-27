@@ -1,12 +1,13 @@
 var View = View || {}
 
-View.AlgoChartData = function() {
+View.AlgoChartData = function(seq_len) {
     this.type = 'chartdata';
-    this.focus = null;
+    this.focus = null; 
+    this.index_map = func_utils.range(0, seq_len);
 }
 
 View.AlgoChartData.prototype.set_focus = function(idx) {
-    this.focus = { 'idx': idx };
+    this.focus = idx;
 }
 
 View.AlgoChartData.prototype.unset_focus = function(idx) {
@@ -14,14 +15,7 @@ View.AlgoChartData.prototype.unset_focus = function(idx) {
 }
 
 View.AlgoChartData.prototype.handle_swap = function(a_idx, b_idx) {
-    if (this.focus !== null) {
-        if (a_idx == this.focus['idx']) {
-            this.focus['idx'] = b_idx;
-        }
-        else if (b_idx == this.focus['idx']) {
-            this.focus['idx'] = a_idx;
-        }
-    }
+    DS.swap(this.index_map, a_idx, b_idx);
 }
 
 View.AlgoChartData.set_focus_handler = function () {
@@ -66,10 +60,15 @@ View.AlgoChart.prototype.render = function(seq, chart_data) {
     var x = this.bar_sep_width / 2;
 
     for (var i=0; i<this.data.length; ++i){
-        if (chart_data.focus != null && i === chart_data.focus['idx'])
-            this.render_bar(x, this.data[i], 'red');
-        else
-            this.render_bar(x, this.data[i], 'grey');
+        colour = 'grey';
+
+        if (chart_data.focus != null)
+        {
+            var fidx = chart_data.index_map[i];   
+            if (fidx == chart_data.focus)
+                colour = 'red';
+        } 
+        this.render_bar(x, this.data[i], colour);
         x += this.bar_width + this.bar_sep_width;
     } 
 }
