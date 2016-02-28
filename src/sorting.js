@@ -1,7 +1,7 @@
 var Algos = Algos || {};
 Algos.Sorting = Algos.Sorting || {};
 
-Algos.Sorting.bubble_sort = function(op_tracker, seq, cmp){
+Algos.Sorting.bubble_sort = function(op_tracker, cmp, seq){
     var work_seq = seq.slice(0);
     Ops.tag(work_seq, 'array');
 
@@ -41,7 +41,7 @@ Algos.Sorting.lomuto_partition = function(op_tracker, seq, cmp, lo, hi){
 }
 
 
-Algos.Sorting.quick_sort = function(op_tracker, seq, cmp, partition_func) {
+Algos.Sorting.quick_sort = function(partition_func, op_tracker, cmp, seq) {
     quick_sort_ = function(op_tracker, seq, cmp, partition_func, lo, hi) {
         if (lo < hi) {
             var p = partition_func(op_tracker, seq, cmp, lo, hi);
@@ -58,7 +58,7 @@ Algos.Sorting.quick_sort = function(op_tracker, seq, cmp, partition_func) {
     return work_seq;
 }
 
-Algos.Sorting.insertion_sort = function(op_tracker, seq, cmp) {
+Algos.Sorting.insertion_sort = function(op_tracker, cmp, seq) {
     var work_seq = seq.slice(0);
     Ops.tag(work_seq, 'array');
 

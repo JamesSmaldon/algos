@@ -78,3 +78,14 @@ fu.repeat = function(count, val) {
 
     return repeat_(count, val, []);
 }
+
+//Note: Variadic arguments
+fu.bind = function(f) {
+    var args = Array.apply(null, arguments);
+    args.shift();
+
+    return function() {
+        var other_args = Array.apply(null, arguments);
+        return f.apply(null, args.concat(other_args));
+    }
+}

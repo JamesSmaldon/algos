@@ -81,28 +81,10 @@ function create_chart(arr) {
     chart.render(arr, chart_data);
 }
 
-function do_bubble_sort() {
+function do_sort(sortf) {
     var cmp = new DS.CountedComparison();
     var ops_tracker = new Ops.OpTracker();
-    arr = Algos.Sorting.bubble_sort(ops_tracker, arr, cmp);
-    iter_ops = new Ops.IterOps(ops_tracker.operations);
-    iter_ops.initial_state(arr);
-    create_chart(arr);
-}
-
-function do_quick_sort() {
-    var cmp = new DS.CountedComparison();
-    var ops_tracker = new Ops.OpTracker();
-    arr = Algos.Sorting.quick_sort(ops_tracker, arr, cmp, Algos.Sorting.lomuto_partition);
-    iter_ops = new Ops.IterOps(ops_tracker.operations);
-    iter_ops.initial_state(arr);
-    create_chart(arr);
-}
-
-function do_insertion_sort() {
-    var cmp = new DS.CountedComparison();
-    var ops_tracker = new Ops.OpTracker();
-    arr = Algos.Sorting.insertion_sort(ops_tracker, arr, cmp);
+    arr = sortf(ops_tracker, cmp, arr);
     iter_ops = new Ops.IterOps(ops_tracker.operations);
     iter_ops.initial_state(arr);
     create_chart(arr);
@@ -110,13 +92,13 @@ function do_insertion_sort() {
 
 function algo_selectbox_changed() {
     if (this.value == "bubble") {
-        do_bubble_sort();
+        do_sort(Algos.Sorting.bubble_sort);
     }
     else if (this.value == "quick") {
-        do_quick_sort();
+        do_sort(fu.bind(Algos.Sorting.quick_sort, Algos.Sorting.lomuto_partition));
     }
     else if (this.value == "insertion") {
-        do_insertion_sort();
+        do_sort(insertion_sort);
     }
 }
 

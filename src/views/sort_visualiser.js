@@ -76,7 +76,7 @@ View.AlgoChart.prototype.render = function(seq, chart_data) {
     for (var i=0; i<this.data.length; ++i){
         colour = 'grey';
 
-        if (chart_data.finished[i])
+        if (seq[i] == i)
             colour = 'green';
 
         if (chart_data.focus != null)
