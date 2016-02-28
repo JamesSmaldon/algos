@@ -49,6 +49,12 @@ fu.n = function(val) {
     return [val !== 0, val];
 }
 
+fu.eq = function(other_val) {
+    return function(val) {
+        return [other_val === val, val];
+    }
+}
+
 fu.match = function(match_specs, val) {
     for (var i=0; i<match_specs.length; ++i) {
         var match = match_specs[i][0](val);

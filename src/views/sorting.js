@@ -5,24 +5,6 @@ var animate_timer;
 var iter_ops;
 var button_down_timer;
 
-function shuffle(array) {
-  var currentIndex = array.length, temporaryValue, randomIndex;
-
-  // While there remain elements to shuffle...
-  while (0 !== currentIndex) {
-
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
-
-    // And swap it with the current element.
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
-  }
-
-  return array;
-}
 
 function next_step() {
     var op = iter_ops.next(arr);
@@ -54,8 +36,8 @@ function start_animate() {
         }
     };
     animate_timer = setInterval(f, 20);
-    document.getElementById("start_button").disabled = true;
     document.getElementById("stop_button").disabled = false;
+    document.getElementById("start_button").disabled = true;
     document.getElementById("prev_step_button").disabled = true;
     document.getElementById("next_step_button").disabled = true;
 }
@@ -91,31 +73,27 @@ function do_sort(sortf) {
 }
 
 function algo_selectbox_changed() {
-    if (this.value == "bubble") {
-        do_sort(Algos.Sorting.bubble_sort);
-    }
-    else if (this.value == "quick") {
-        do_sort(fu.bind(Algos.Sorting.quick_sort, Algos.Sorting.lomuto_partition));
-    }
-    else if (this.value == "insertion") {
-        do_sort(insertion_sort);
-    }
+    fu.match([[fu.eq("bubble"), function(v) { do_sort(Algos.Sorting.bubble_sort); }], 
+              [fu.eq("quick"), function(v) { do_sort(fu.bind(Algos.Sorting.quick_sort, Algos.Sorting.lomuto_partition)) }],
+              [fu.eq("insertion"), function(v) { do_sort(Algos.Sorting.insertion_sort); }]],
+             this.value);
 }
 
 function data_selectbox_changed() {
     var nums_to_sort = [];
 
-    if (this.value == "random") {
-        nums_to_sort = fu.range(0,50);
-        shuffle(nums_to_sort);
-    }
-    else if (this.value == "reversed") {
-        nums_to_sort = fu.range(0,50);
-        nums_to_sort.reverse();
-    }
-    else if (this.value == "sorted") {
-        nums_to_sort = fu.range(0,50);
-    }
+    fu.match([[fu.eq("random"), function(v) {
+                                    nums_to_sort = fu.range(0,50);
+                                    DS.shuffle(nums_to_sort);
+                                }],
+              [fu.eq("reversed"), function(v) {
+                                    nums_to_sort = fu.range(0,50);
+                                    nums_to_sort.reverse();
+                                }],
+              [fu.eq("sorted"), function(v) {
+                                    nums_to_sort = fu.range(0,50);
+                                }]],
+             this.value);
 
     arr = nums_to_sort.slice(0);
     Ops.tag(arr, 'array');
@@ -124,33 +102,18 @@ function data_selectbox_changed() {
     algo_selectbox.onchange();
 }
 
-function init_algo_selectbox(){
-    var select_box = document.getElementById("algo_select");
-    var options = [["Bubble Sort", "bubble"], ["Quick Sort", "quick"], ["Insertion Sort", "insertion"]];
+function create_dropdown(id, value_pairs, on_change) {
+    var select_box = document.getElementById(id);
 
-    for (var i=0; i<options.length; ++i){
+    for (var i=0; i<value_pairs.length; ++i){
         var opt = document.createElement("option");
-        opt.value = options[i][1];
-        opt.text = options[i][0];
+        opt.value = value_pairs[i][1];
+        opt.text = value_pairs[i][0];
         select_box.appendChild(opt);
     }
 
-    select_box.onchange = algo_selectbox_changed;
-    return select_box;
-}
+    select_box.onchange = on_change;
 
-function init_data_selectbox(){
-    var select_box = document.getElementById("data_select");
-    var options = [["Random", "random"], ["Sorted", "sorted"], ["Reversed", "reversed"]];
-
-    for (var i=0; i<options.length; ++i){
-        var opt = document.createElement("option");
-        opt.value = options[i][1];
-        opt.text = options[i][0];
-        select_box.appendChild(opt);
-    }
-
-    select_box.onchange = data_selectbox_changed;
     return select_box;
 }
 
@@ -161,7 +124,21 @@ window.onload = function () {
     Ops.set_op_handler('chartdata', 'unfocus', View.AlgoChartData.unset_focus_handler());
     Ops.set_op_handler('chartdata', 'finished', View.AlgoChartData.finished_handler());
 
-    var data_selectbox = init_data_selectbox();
-    var algo_selectbox = init_algo_selectbox();
+    var algo_options = [["Bubble Sort", "bubble"], 
+                        ["Quick Sort", "quick"], 
+                        ["Insertion Sort", "insertion"]];
+
+    var algo_selectbox = create_dropdown("algo_select", 
+                                            algo_options, 
+                                            algo_selectbox_changed);
+
+    var data_options = [["Random", "random"], 
+                        ["Sorted", "sorted"], 
+                        ["Reversed", "reversed"]];
+
+    var data_selectbox = create_dropdown("data_select",
+                                            data_options,
+                                            data_selectbox_changed);
+
     data_selectbox.onchange();
 }
