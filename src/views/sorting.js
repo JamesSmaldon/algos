@@ -64,7 +64,7 @@ function create_chart(arr) {
 }
 
 function do_sort(sortf) {
-    var cmp = new DS.CountedComparison();
+    var cmp = new DU.CountedComparison();
     var ops_tracker = new Ops.OpTracker();
     arr = sortf(ops_tracker, cmp, arr);
     iter_ops = new Ops.IterOps(ops_tracker.operations);
@@ -84,7 +84,7 @@ function data_selectbox_changed() {
 
     fu.match([[fu.eq("random"), function(v) {
                                     nums_to_sort = fu.range(0,50);
-                                    DS.shuffle(nums_to_sort);
+                                    DU.shuffle(nums_to_sort);
                                 }],
               [fu.eq("reversed"), function(v) {
                                     nums_to_sort = fu.range(0,50);
@@ -118,7 +118,7 @@ function create_dropdown(id, value_pairs, on_change) {
 }
 
 window.onload = function () {
-    Ops.set_op_handler('array', 'swap', DS.array_swap_handler());
+    Ops.set_op_handler('array', 'swap', DU.array_swap_handler());
     Ops.set_op_handler('chartdata', 'swap', View.AlgoChartData.swap_handler());
     Ops.set_op_handler('chartdata', 'focus', View.AlgoChartData.set_focus_handler());
     Ops.set_op_handler('chartdata', 'unfocus', View.AlgoChartData.unset_focus_handler());

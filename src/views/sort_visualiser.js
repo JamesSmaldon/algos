@@ -24,7 +24,7 @@ View.AlgoChartData.prototype.set_unfinished = function(idx) {
 }
 
 View.AlgoChartData.prototype.handle_swap = function(a_idx, b_idx) {
-    DS.swap(this.index_map, a_idx, b_idx);
+    DU.swap(this.index_map, a_idx, b_idx);
 }
 
 View.AlgoChartData.set_focus_handler = function () {
