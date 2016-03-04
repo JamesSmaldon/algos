@@ -42,11 +42,11 @@ Algos.Sorting.lomuto_partition = function(op_tracker, seq, cmp, lo, hi){
 
 
 Algos.Sorting.quick_sort = function(partition_func, op_tracker, cmp, seq) {
-    quick_sort_ = function(op_tracker, seq, cmp, partition_func, lo, hi) {
+    var quick_sort_ = function(op_tracker, seq, cmp, partition_func, lo, hi) {
         if (lo < hi) {
             var p = partition_func(op_tracker, seq, cmp, lo, hi);
-            this.quick_sort_(op_tracker, seq, cmp, partition_func, lo, p-1);
-            this.quick_sort_(op_tracker, seq, cmp, partition_func, p+1, hi);
+            quick_sort_(op_tracker, seq, cmp, partition_func, lo, p-1);
+            quick_sort_(op_tracker, seq, cmp, partition_func, p+1, hi);
         } 
     }
 

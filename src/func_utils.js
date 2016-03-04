@@ -68,6 +68,25 @@ fu.match = function(match_specs, val) {
     throw "No matches found.";
 }
 
+fu.map = function(f, xs) {
+    var mapf = function(result, x) {
+        result.push(f(x));
+        return result;
+    }
+    return fu.fold(mapf);
+}
+
+fu.zip = function(xs, ys) {
+    var min_idx = Math.min(xs.length(), ys.length());
+    var result = [];
+
+    for (var i=0; i<min_idx; ++i){
+        result.push([xs[i], ys[i]]);    
+    }
+
+    return result;
+}
+
 fu.fold = function(f, accum, xs) {
     return fu.match([[fu.empty, function()     { return accum; }],
                      [fu.x_xs,  function(x, xs){ return fu.fold(f, f(accum, x), xs); }]],

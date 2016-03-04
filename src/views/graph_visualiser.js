@@ -1,5 +1,10 @@
 var View = View || {}
 
+View.GraphVisNode = function(node) {
+    this.node = node;
+    this.pos = M.Vector(0.0, 0.0, 0.0);
+}
+
 View.GraphVisualiser = function(ctx, width, height) {
     this.width = width;
     this.height = height;

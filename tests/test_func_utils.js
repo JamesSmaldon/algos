@@ -5,7 +5,7 @@ QUnit.test("loop.until loops until the function returns true", function(assert) 
         return x == 5;
     };
 
-    func_utils.until(f);
+    fu.until(f);
 
     assert.ok(x == 5);
 });
@@ -17,7 +17,7 @@ QUnit.test("loop.until_false loops until the function returns false", function(a
         return x < 5;
     }
 
-    func_utils.until_false(f);
+    fu.until_false(f);
 
     assert.ok(x == 5);
 });
