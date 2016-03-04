@@ -13,11 +13,22 @@ fu.not = function(f){
     return function() { return !f() };
 }
 
+fu.id = function(v) {
+    return v;
+}
+
 fu.until_false = function(f){
     this.until(this.not(f));
 }
 
 fu.range = function(start, end) {
+    if (start > end)
+        throw "Start of range greater than end.";
+
+    if (start === end)
+        return [];
+
+
     var result = [];
 
     var i = start;
@@ -37,7 +48,7 @@ fu.empty = function(arr) {
 
 fu.x_xs = function(arr) {
     var xs = arr.slice(0);
-    var x = arr_copy.shift();
+    var x = xs.shift();
     return [arr.length > 0, x, xs]; 
 }
 
@@ -73,11 +84,11 @@ fu.map = function(f, xs) {
         result.push(f(x));
         return result;
     }
-    return fu.fold(mapf);
+    return fu.fold(mapf, [], xs);
 }
 
 fu.zip = function(xs, ys) {
-    var min_idx = Math.min(xs.length(), ys.length());
+    var min_idx = Math.min(xs.length, ys.length);
     var result = [];
 
     for (var i=0; i<min_idx; ++i){
@@ -106,11 +117,11 @@ fu.repeat = function(count, val) {
 
 //Note: Variadic arguments
 fu.bind = function(f) {
-    var args = Array.apply(null, arguments);
+    var args = Array.prototype.slice.call(arguments);
     args.shift();
 
     return function() {
-        var other_args = Array.apply(null, arguments);
+        var other_args = Array.prototype.slice.call(arguments);
         return f.apply(null, args.concat(other_args));
     }
 }
