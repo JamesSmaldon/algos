@@ -18,22 +18,27 @@ DU.array_swap_handler = function() {
     return new Ops.Handler(DU.swap, DU.swap);
 }
 
-DU.shuffle = function(array) {
-  var currentIndex = array.length, temporaryValue, randomIndex;
-
-  // While there remain elements to shuffle...
-  while (0 !== currentIndex) {
-
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
-
-    // And swap it with the current element.
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
-  }
-
-  return array;
+DU.shuffle = function(array, rnd_index_f) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+    if (rnd_index_f === undefined) {
+        rnd_index_f = function(current_index) {
+                            return Math.floor(Math.random() * current_index); 
+                      }; 
+    }
+  
+    // While there remain elements to shuffle...
+    while (0 !== currentIndex) {
+  
+      // Pick a remaining element...
+      randomIndex = rnd_index_f(currentIndex);
+      currentIndex -= 1;
+  
+      // And swap it with the current element.
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+  
+    return array;
 }
 
