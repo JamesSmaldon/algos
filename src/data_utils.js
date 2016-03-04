@@ -34,9 +34,7 @@ DU.shuffle = function(array, rnd_index_f) {
       currentIndex -= 1;
   
       // And swap it with the current element.
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
+      DU.swap(array, currentIndex, randomIndex);
     }
   
     return array;
