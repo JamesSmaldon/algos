@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="./src/func_utils.js"></script>
+    <script src="./src/counted_comparison.js"></script>
+    <script src="./src/data_utils.js"></script>
+    <script src="./src/views/line_graph.js"></script>
+    <script src="./src/maths/vector.js"></script>
+    <script src="./src/maths/rect.js"></script>
+</head>
+<body>
+    <canvas id="graph_canvas" width="600" height="600"> </canvas>
+    <script type="text/javascript">
+        var canvas = document.getElementById("graph_canvas");
+        var f = function(x) {
+            return Math.sin(x);
+        }
+
+        var df = function(x) {
+            return Math.cos(x);
+        }
+
+        var lg = new View.LineGraph(canvas, 600, 600, f, df, -10, 10, 1000);
+        canvas.onmousemove = function(e) { lg.handle_mouse_move(e); };
+        canvas.onmouseout = function(e) { lg.handle_mouse_out(e); };
+        lg.render();
+    </script>
+</body>
+</html>
+

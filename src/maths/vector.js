@@ -34,4 +34,3 @@ M.Vector.prototype.add = function(other) {
     return new M.Vector(fu.fold(addf, [], fu.zip(this.data, other.data)));
 }
 
-
