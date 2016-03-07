@@ -107,6 +107,11 @@ View.LineGraph.prototype.render = function() {
         var start = this.canvas_rect.map(func_coord.add(new M.Vector(-half_grad_len, -dy)), this.func_rect); 
         var middle = this.canvas_rect.map(func_coord, this.func_rect);
         var end = this.canvas_rect.map(func_coord.add(new M.Vector(half_grad_len, dy)), this.func_rect);
+
+        var unit = end.sub(middle).unit();
+        start = unit.scale(100).add(middle);
+        end = unit.scale(-100).add(middle);
+
         this.ctx.moveTo(start.data[0], this.canvas_rect.height - start.data[1]);
         this.ctx.lineTo(end.data[0], this.canvas_rect.height - end.data[1]);
         this.ctx.stroke();
