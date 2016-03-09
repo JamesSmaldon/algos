@@ -78,6 +78,7 @@ View.LineGraph.prototype.render = function() {
     }
 
     this.ctx.strokeStyle = 'black';
+    this.ctx.lineWidth = 3;
     this.ctx.beginPath();
 
     var sample_rect = new M.Rect(0, 0, this.n_samples, 0);
@@ -93,8 +94,6 @@ View.LineGraph.prototype.render = function() {
     this.ctx.stroke();
 
     if (this.mouse_x_pos !== null) {
-        this.ctx.strokeStyle = 'red';
-        this.ctx.beginPath(); 
 
         var half_grad_len = this.func_rect.width * 0.1 * 0.5;
 
@@ -108,6 +107,9 @@ View.LineGraph.prototype.render = function() {
         var middle = this.canvas_rect.map(func_coord, this.func_rect);
         var end = this.canvas_rect.map(func_coord.add(new M.Vector(half_grad_len, dy)), this.func_rect);
 
+
+        this.ctx.strokeStyle = 'red';
+        this.ctx.beginPath(); 
         var unit = end.sub(middle).unit();
         start = unit.scale(100).add(middle);
         end = unit.scale(-100).add(middle);
@@ -121,5 +123,9 @@ View.LineGraph.prototype.render = function() {
         this.ctx.fillText("x: " + func_coord.data[0].toFixed(2), middle.data[0] + 30, this.canvas_rect.height - middle.data[1]);
         this.ctx.fillText("y: " + func_coord.data[1].toFixed(2), middle.data[0] + 30, this.canvas_rect.height - middle.data[1]+10);
         this.ctx.fillText("dy/dx: " + dy.toFixed(2), middle.data[0] + 30, this.canvas_rect.height - middle.data[1]+20);
+
+        this.ctx.beginPath();
+        this.ctx.arc(middle.data[0], this.canvas_rect.height - middle.data[1], 5, 0, 2.0 * Math.PI);
+        this.ctx.fill();
     }
 }

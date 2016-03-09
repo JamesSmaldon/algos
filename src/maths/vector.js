@@ -63,7 +63,7 @@ M.Vector.prototype.dot = function(other) {
 }
 
 M.Vector.prototype.scale = function(val) {
-    result = [];
+    var result = [];
 
     for (var i=0; i<this.size(); ++i) {
         result.push(this.data[i] * val);
@@ -77,5 +77,10 @@ M.Vector.prototype.length = function() {
 }
 
 M.Vector.prototype.unit = function() {
-    return this.scale(1.0 / this.length());
+    var len = this.length();
+
+    if (len == 0.0)
+        return new M.Vector(0.0, 0.0, 0.0);
+    
+    return this.scale(1.0 / len);
 }
