@@ -1,3 +1,4 @@
+QUnit.module("CountedComparison");
 QUnit.test("CountedComparison initial count zero", function(assert) {
     var cmp = new DU.CountedComparison();
     assert.equal(0, cmp.comparison_count);

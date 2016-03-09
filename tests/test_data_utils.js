@@ -1,3 +1,4 @@
+QUnit.module("DU");
 QUnit.test("valid idx", function(assert) {
     assert.notOk(DU.valid_idx([], 0));
     assert.notOk(DU.valid_idx([], 1));

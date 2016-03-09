@@ -1,3 +1,4 @@
+QUnit.module("fu");
 QUnit.test("until loops until the function returns true", function(assert) {
     var x = 0;
     var f = function() {

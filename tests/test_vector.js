@@ -1,3 +1,4 @@
+QUnit.module("Vector");
 QUnit.test("eq method", function(assert) {
     var a = new M.Vector(1,2,3);
     var b = new M.Vector(1,2,3);

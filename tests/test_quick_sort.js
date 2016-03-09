@@ -1,3 +1,4 @@
+QUnit.module("quick_sort");
 QUnit.test("quick_sort", function(assert) {
     Ops.set_op_handler('array', 'swap', DU.array_swap_handler());
 

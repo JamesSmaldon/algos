@@ -1,3 +1,4 @@
+QUnit.module("BubbleSort");
 QUnit.test("BubbleSort.sort", function(assert) {
     Ops.set_op_handler('array', 'swap', DU.array_swap_handler());
     var sorted = Algos.Sorting.bubble_sort(new Ops.OpTracker(), 
