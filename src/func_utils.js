@@ -17,6 +17,12 @@ fu.id = function(v) {
     return v;
 }
 
+fu.swap = function(f) {
+    return function(a,b) {
+        return f(b,a);
+    }
+}
+
 fu.until_false = function(f){
     this.until(this.not(f));
 }
@@ -85,6 +91,29 @@ fu.map = function(f, xs) {
         return result;
     }
     return fu.fold(mapf, [], xs);
+}
+
+fu.filter = function(f, xs) {
+    var filterf = function(result, x) {
+        if (f(x)) {
+            result.push(x);
+        }
+        return result;
+    }
+    return fu.fold(filterf, [], xs);
+}
+
+fu.partition = function(f, xs) {
+    var filterf = function(result, x) {
+        if (f(x)) {
+            result[0].push(x);
+        }
+        else {
+            result[1].push(x);
+        }
+        return result;
+    }
+    return fu.fold(filterf, [[],[]], xs);
 }
 
 fu.zip = function(xs, ys) {
