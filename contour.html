@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="./src/func_utils.js"></script>
+    <script src="./src/counted_comparison.js"></script>
+    <script src="./src/operations.js"></script>
+    <script src="./src/data_utils.js"></script>
+    <script src="./src/maths/rect.js"></script>
+    <script src="./src/maths/shapes.js"></script>
+    <script src="./src/maths/utils.js"></script>
+    <script src="./src/maths/vector.js"></script>
+    <script src="./src/views/contour_plot.js"></script>
+    <script src="./src/views/graph_visualiser.js"></script>
+</head>
+<body>
+    <canvas id="contour_canvas" width="600" height="600"> </canvas>
+    <script type="text/javascript">
+        var canvas = document.getElementById("contour_canvas");
+        var f = function(x,y) {
+            var A=10.0;
+            var x0 = 5.0;
+            var y0 = 5.0;
+            var sigx = 3.0;
+            var sigy = 3.0;
+
+            var tmp = (Math.pow(x - x0,2) / (2 * Math.pow(sigx,2))) + 
+                      (Math.pow(y - y0,2) / (2 * Math.pow(sigy,2)));
+            return A * Math.exp(-tmp);
+        }
+
+        var f_rect = new M.Rect(0.0, 0.0, 10.0, 10.0);
+        var segs = View.generate_contour_lines(f_rect, 0.5, f, fu.range(1,15));
+
+        var canv_rect = new M.Rect(0, 0, 600, 600);
+        var ctx = canvas.getContext("2d");
+
+        for (var s=0; s<segs.length; ++s) {
+            var ls = segs[s];
+            var s_cs = canv_rect.map(ls.start, f_rect);
+            var e_cs = canv_rect.map(ls.end, f_rect);
+
+            ctx.beginPath();
+            ctx.moveTo(s_cs.data[0], canv_rect.height - s_cs.data[1]);
+            ctx.lineTo(e_cs.data[0], canv_rect.height - e_cs.data[1]);
+            ctx.stroke();
+        }
+
+    </script>
+</body>
+</html>

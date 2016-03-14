@@ -27,7 +27,16 @@ M.intersection = function(a, b) {
         var u = line.end.sub(line.start);
         var n = plane.normal;
 
-        return n.scale(-1).dot(w) / n.dot(u);
+        var ndotu = n.dot(u);
+        if (ndotu == 0)
+            return null;
+
+        var s = n.scale(-1).dot(w) / n.dot(u);
+        if (s <= 1.0) {
+            return line.start.add(u.scale(s));
+        }
+
+        return null;
     }
 
     var func_table = {};

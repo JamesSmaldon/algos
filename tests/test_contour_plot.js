@@ -92,5 +92,31 @@ QUnit.test("contour_line_for_triangle non intersecting cases", function (assert)
     assert.deepEqual(View.contour_line_for_triangle(c1, 3), new M.LineSegment(c1.p2, c1.p3));
     assert.deepEqual(View.contour_line_for_triangle(c2, 3), new M.LineSegment(c2.p1, c2.p3));
     assert.deepEqual(View.contour_line_for_triangle(c3, 3), new M.LineSegment(c3.p1, c3.p2));
+
+    // 1 on, 1 above, 1 below.
+    var c1 = new M.Triangle(new M.Vector(0,1.5,2), 
+                            new M.Vector(1.5,0,3),
+                            new M.Vector(0,-1.5,4));
+
+    assert.deepEqual(View.contour_line_for_triangle(c1, 3), 
+            new M.LineSegment(new M.Vector(1.5,0,3), new M.Vector(0,0,3)));
+
+    // 1 above, two below.
+    var c1 = new M.Triangle(new M.Vector(0, 1.5, 4),
+                           new M.Vector(1.5, 0, 2),
+                           new M.Vector(0, -1.5, 2));
+
+    assert.deepEqual(View.contour_line_for_triangle(c1, 3),
+            new M.LineSegment(new M.Vector(0.75,0.75,3),
+                              new M.Vector(0,0,3)));
+
+    // 1 below, two above.
+    var c1 = new M.Triangle(new M.Vector(0, 1.5, 2),
+                           new M.Vector(1.5, 0, 4),
+                           new M.Vector(0, -1.5, 4));
+
+    assert.deepEqual(View.contour_line_for_triangle(c1, 3),
+            new M.LineSegment(new M.Vector(0.75,0.75,3),
+                              new M.Vector(0,0,3)));
     
 });
