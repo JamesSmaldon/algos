@@ -58,8 +58,8 @@ function reset() {
 
 function create_chart(arr) {
     var ctx = document.getElementById("sort_canvas").getContext("2d");
-    chart = new View.AlgoChart(ctx, 600, 600);
-    chart_data = new View.AlgoChartData(arr.length);
+    chart = new View.SortVis(ctx, 600, 600);
+    chart_data = new View.SortVisData(arr.length);
     chart.render(arr, chart_data);
 }
 
@@ -119,10 +119,10 @@ function create_dropdown(id, value_pairs, on_change) {
 
 window.onload = function () {
     Ops.set_op_handler('array', 'swap', DU.array_swap_handler());
-    Ops.set_op_handler('chartdata', 'swap', View.AlgoChartData.swap_handler());
-    Ops.set_op_handler('chartdata', 'focus', View.AlgoChartData.set_focus_handler());
-    Ops.set_op_handler('chartdata', 'unfocus', View.AlgoChartData.unset_focus_handler());
-    Ops.set_op_handler('chartdata', 'finished', View.AlgoChartData.finished_handler());
+    Ops.set_op_handler('chartdata', 'swap', View.SortVisData.swap_handler());
+    Ops.set_op_handler('chartdata', 'focus', View.SortVisData.set_focus_handler());
+    Ops.set_op_handler('chartdata', 'unfocus', View.SortVisData.unset_focus_handler());
+    Ops.set_op_handler('chartdata', 'finished', View.SortVisData.finished_handler());
 
     var algo_options = [["Bubble Sort", "bubble"], 
                         ["Quick Sort", "quick"], 
