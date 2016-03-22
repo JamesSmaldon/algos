@@ -9,6 +9,7 @@
     <script src="../src/visualisers/line_graph.js"></script>
     <script src="../src/maths/vector.js"></script>
     <script src="../src/maths/shapes.js"></script>
+    <script src='https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 </head>
 <body>
     <canvas id="graph_canvas" width="600" height="600"> </canvas>
@@ -27,6 +28,16 @@
         canvas.onmouseout = function(e) { lg.handle_mouse_out(e); };
         lg.render();
     </script>
+    <h2>Newton's Method (AKA The Newton-Raphson method)</h2>
+<p>
+A method for finding successively better approximations to roots of a
+real-valued function.  Given an initial guess \(x_{0}\) and a function \(f\)
+with derivative \(f'\).
+</p>
+
+    <h2>The Broyden-Fletcher-Goldfarb-Shanno Algorithm (BFGS)</h2>
+This method approximates Newton's method
+Newtons method is centered around a quadratic approximation of \(f\) for points near \(x_{n}\).
 </body>
 </html>
 

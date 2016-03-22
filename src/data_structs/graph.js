@@ -5,7 +5,7 @@ DU.Node = function(value) {
     this.edges = [];
 }
 
-DU.Node.prototype.add_edge(edge) {
+DU.Node.prototype.add_edge = function(edge) {
     this.edges.push(edge);
 }
 
@@ -22,28 +22,28 @@ DU.Graph = function() {
     this.edges = [];
 }
 
-DU.Graph.prototype.add_node(node) {
+DU.Graph.prototype.add_node = function(node) {
     this.nodes.push(node);
 }
 
-DU.Graph.prototype.add_edge(edge) {
+DU.Graph.prototype.add_edge = function(edge) {
     this.edges.push(edge);
 }
 
-DU.Graph.create_cycle(size) {
+DU.create_cycle = function(size) {
     if (size < 3)
         throw "Cannot create a cycle of less than 3 nodes.";
 
     var g = new DU.Graph();
 
     for (var i=0; i<size; ++i) {
-        var n = new Node(i);
+        var n = new DU.Node(i);
         g.add_node(n);
     }
 
     for (var i=0; i<size; ++i) {
         var j=(i+1) % size;
-        var e = new Edge(g.nodes[i], g.nodes[j]);
+        var e = new DU.Edge(g.nodes[i], g.nodes[j]);
         g.add_edge(e);
     }
 
