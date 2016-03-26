@@ -23,6 +23,13 @@ fu.swap = function(f) {
     }
 }
 
+fu.compose = function(f, g) {
+    return function () {
+        var args = Array.prototype.slice.call(arguments);
+        return g(f.apply(null, args));
+    }
+}
+
 fu.until_false = function(f){
     this.until(this.not(f));
 }
@@ -152,5 +159,18 @@ fu.bind = function(f) {
     return function() {
         var other_args = Array.prototype.slice.call(arguments);
         return f.apply(null, args.concat(other_args));
+    }
+}
+
+//Note: Variadic arguments
+fu.obind = function(f) {
+    var args = Array.prototype.slice.call(arguments);
+    args.shift();
+
+    return function() {
+        var other_args = Array.prototype.slice.call(arguments);
+        var all_args = args.concat(other_args);
+        var o = all_args.shift();
+        return f.apply(o, all_args);
     }
 }
