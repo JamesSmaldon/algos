@@ -3,19 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
-    <script src="../src/utils/func_utils.js"></script>
-    <script src="../src/data_structs/counted_comparison.js"></script>
-    <script src="../src/data_structs/operations.js"></script>
-    <script src="../src/data_structs/graph.js"></script>
-    <script src="../src/utils/data_utils.js"></script>
-    <script src="../src/algorithms/sorting.js"></script>
-    <script src="../src/maths/vector.js"></script>
-    <script src="../src/maths/shapes.js"></script>
-    <script src="../src/visualisers/graphs.js"></script>
-    <script src="../src/maths/verlet_integration.js"></script>
-    <script src="../src/visualisers/graph_visualiser.js"></script>
+    <script data-main="../src/requireconf.js" src="../lib/require.js/2.2.0/require.js"></script>
 </head>
 <body>
     <canvas id="graph_canvas" width="600" height="600"> </canvas>
+    <script type="text/javascript">
+        require.config({
+            paths: {
+                domReady: '../lib/domready.js/2.0.1/domReady.min'
+            }
+});
+        require(['domReady', 'visualisers/graphs'], function(dr, graphvis) {
+            dr(function() {
+                graphvis.onload();
+            });
+        });
+    </script>
 </body>
 </html>

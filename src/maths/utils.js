@@ -1,8 +1,9 @@
-var M = M || {};
+define({
+    float_eq: function(a, b, delta) {
+        if (delta === undefined)
+            delta = 0.00000001;
 
-M.float_eq = function(a, b, delta) {
-    if (delta === undefined)
-        delta = 0.00000001;
+        return Math.abs(a - b) <= delta;
+    }
+});
 
-    return Math.abs(a - b) <= delta;
-}
