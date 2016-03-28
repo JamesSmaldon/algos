@@ -19,51 +19,47 @@ View.contour_line_for_triangle = function(triangle, contour_height) {
 
     var plane = new M.Plane(new M.Vector(0,0,1), new M.Vector(0,0,contour_height));
     var c_pts = on(triangle);
+    var num_c_pts = c_pts.length;
+    var above_pts = above(triangle);
+    var below_pts = below(triangle);
 
-    return fu.match([[fu.eq(3), function(v) { return null; }],
-                     [fu.eq(2), function(v) {
-                                   return new M.LineSegment(c_pts[0], 
-                                                            c_pts[1]);
-                                }],
-                     [fu.eq(1), function(v) {
-                                   var above_pts = above(triangle);
-                                   var below_pts = below(triangle);
+    switch(num_c_pts) {
+        case 2:
+            return new M.LineSegment(c_pts[0], c_pts[1]);
+        case 1:
+           if (above_pts.length === 1 && below_pts.length === 1) {
+               var l = new M.LineSegment(below_pts[0], above_pts[0]);
+               var intersect_pt = M.intersection(l, plane);
+               if (intersect_pt !== null) {
+                   return new M.LineSegment(c_pts[0], intersect_pt); 
+               }
+           }
 
-                                   if (above_pts.length === 1 && below_pts.length === 1) {
-                                       var l = new M.LineSegment(below_pts[0], above_pts[0]);
-                                       var intersect_pt = M.intersection(l, plane);
-                                       if (intersect_pt !== null) {
-                                           return new M.LineSegment(c_pts[0], intersect_pt); 
-                                       }
-                                   }
+           return null;
+        case 0:
+           if (above_pts.length === 1 && below_pts.length === 2) {
+               var l1 = new M.LineSegment(below_pts[0], above_pts[0]);
+               var l2 = new M.LineSegment(below_pts[1], above_pts[0]);
 
-                                   return null;
-                                }],
-                     [fu.eq(0), function(v) {
-                                   var above_pts = above(triangle);  
-                                   var below_pts = below(triangle);
+               var i1 = M.intersection(l1, plane);
+               var i2 = M.intersection(l2, plane);
 
-                                   if (above_pts.length === 1 && below_pts.length === 2) {
-                                       var l1 = new M.LineSegment(below_pts[0], above_pts[0]);
-                                       var l2 = new M.LineSegment(below_pts[1], above_pts[0]);
+               return new M.LineSegment(i1, i2);
+           }
+           else if (above_pts.length === 2 && below_pts.length === 1) {
+               var l1 = new M.LineSegment(below_pts[0], above_pts[0]);
+               var l2 = new M.LineSegment(below_pts[0], above_pts[1]);
 
-                                       var i1 = M.intersection(l1, plane);
-                                       var i2 = M.intersection(l2, plane);
+               var i1 = M.intersection(l1, plane);
+               var i2 = M.intersection(l2, plane);
 
-                                       return new M.LineSegment(i1, i2);
-                                   }
-                                   else if (above_pts.length === 2 && below_pts.length == 1) {
-                                       var l1 = new M.LineSegment(below_pts[0], above_pts[0]);
-                                       var l2 = new M.LineSegment(below_pts[0], above_pts[1]);
-
-                                       var i1 = M.intersection(l1, plane);
-                                       var i2 = M.intersection(l2, plane);
-
-                                       return new M.LineSegment(i1, i2);
-                                   }
-                                
-                                   return null;
-                                }]], c_pts.length);
+               return new M.LineSegment(i1, i2);
+           }
+        
+           return null;
+        default:
+           return null;
+    }
 }
 
 View.GridSampler = function(sample_rect, cell_size, f) {

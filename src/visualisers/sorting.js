@@ -73,27 +73,35 @@ function do_sort(sortf) {
 }
 
 function algo_selectbox_changed() {
-    fu.match([[fu.eq("bubble"), function(v) { do_sort(Algos.Sorting.bubble_sort); }], 
-              [fu.eq("quick"), function(v) { do_sort(fu.bind(Algos.Sorting.quick_sort, Algos.Sorting.lomuto_partition)) }],
-              [fu.eq("insertion"), function(v) { do_sort(Algos.Sorting.insertion_sort); }]],
-             this.value);
+    switch (this.value) {
+        case "bubble":
+            do_sort(Algos.Sorting.bubble_sort);
+            break;
+        case "quick":
+            do_sort(fu.bind(Algos.Sorting.quick_sort, Algos.Sorting.lomuto_partition));
+            break;
+        case "insertion": 
+            do_sort(Algos.Sorting.insertion_sort); 
+            break;
+    }
 }
 
 function data_selectbox_changed() {
     var nums_to_sort = [];
 
-    fu.match([[fu.eq("random"), function(v) {
-                                    nums_to_sort = fu.range(0,50);
-                                    DU.shuffle(nums_to_sort);
-                                }],
-              [fu.eq("reversed"), function(v) {
-                                    nums_to_sort = fu.range(0,50);
-                                    nums_to_sort.reverse();
-                                }],
-              [fu.eq("sorted"), function(v) {
-                                    nums_to_sort = fu.range(0,50);
-                                }]],
-             this.value);
+    switch (this.value) {
+        case "random":
+            nums_to_sort = fu.range(0,50);
+            DU.shuffle(nums_to_sort);
+            break;
+        case "reversed":
+            nums_to_sort = fu.range(0,50);
+            nums_to_sort.reverse();
+            break;
+        case "sorted":
+            nums_to_sort = fu.range(0,50);
+            break;
+    }
 
     arr = nums_to_sort.slice(0);
     Ops.tag(arr, 'array');

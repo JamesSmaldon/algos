@@ -55,43 +55,6 @@ fu.range = function(start, end) {
     return result;
 }
 
-fu.empty = function(arr) {
-    return [arr.length === 0];
-}
-
-fu.x_xs = function(arr) {
-    var xs = arr.slice(0);
-    var x = xs.shift();
-    return [arr.length > 0, x, xs]; 
-}
-
-fu.zero = function(val) {
-    return [val === 0];
-}
-
-fu.n = function(val) {
-    return [val !== 0, val];
-}
-
-fu.eq = function(other_val) {
-    return function(val) {
-        return [other_val === val, val];
-    }
-}
-
-fu.match = function(match_specs, val) {
-    for (var i=0; i<match_specs.length; ++i) {
-        var match = match_specs[i][0](val);
-        var matched = match[0];
-        if (matched) {
-            match.shift();
-            return match_specs[i][1].apply(null, match);
-        }
-    }
-
-    throw "No matches found.";
-}
-
 fu.map = function(f, xs) {
     var mapf = function(result, x) {
         result.push(f(x));
@@ -135,17 +98,30 @@ fu.zip = function(xs, ys) {
 }
 
 fu.fold = function(f, accum, xs) {
-    return fu.match([[fu.empty, function()     { return accum; }],
-                     [fu.x_xs,  function(x, xs){ return fu.fold(f, f(accum, x), xs); }]],
-                     xs);
+    function fold_(f, accum, xs) {
+        if (xs.length === 0) {
+            return accum;
+        }
+        else {
+            var x = xs.shift();
+            return fold_(f, f(accum, x), xs);
+        }
+    }
+
+    // Clone the array so that it's not destroyed.
+    var xs_copy = xs.slice(0);
+    return fold_(f, accum, xs_copy);
 } 
 
 fu.repeat = function(count, val) {
     var repeat_ = function(count, val, result) {
-        return fu.match([[fu.zero, function() { return result; }],
-                         [fu.n,    function(n){ result.unshift(val);
-                                                return repeat_(count-1, val, result); }]],
-                         count);
+        if (count === 0) {
+            return result;
+        }
+        else {
+            result.unshift(val);
+            return repeat_(count-1, val, result);
+        }
     }
 
     return repeat_(count, val, []);

@@ -41,57 +41,15 @@ QUnit.test("range generates correct range for valid inputs", function(assert) {
     assert.deepEqual(fu.range(0,0), []);
 });
 
-QUnit.test("empty returns true for empty array and false for non-empty array", function(assert) {
-    assert.deepEqual(fu.empty([]), [true]);
-    assert.deepEqual(fu.empty([1,2]), [false]);
-});
-
-QUnit.test("x_xs", function(assert) {
-    assert.deepEqual(fu.x_xs([1,2,3]), [true, 1, [2,3]]);
-    assert.deepEqual(fu.x_xs([1]), [true, 1, []]);
-    assert.deepEqual(fu.x_xs([]), [false, undefined, []]);
-});
-
-QUnit.test("zero", function(assert) {
-    assert.deepEqual(fu.zero(0), [true]);
-    assert.deepEqual(fu.zero(1), [false]);
-});
-
-QUnit.test("n", function(assert) {
-    assert.deepEqual(fu.n(0), [false, 0]);
-    assert.deepEqual(fu.n(1), [true, 1]);
-    assert.deepEqual(fu.n(2), [true, 2]);
-});
-
-QUnit.test("eq", function(assert) {
-    assert.deepEqual(fu.eq(2)(2), [true, 2]);
-    assert.deepEqual(fu.eq(2)(3), [false, 3]);
-    assert.deepEqual(fu.eq(2)(4), [false, 4]);
-});
-
-QUnit.test("match throws exception if nothing matches", function(assert) {
-    assert.throws(function() {
-        fu.match([], "test");
-    }, "match throws if not matchers provided");
-
-    assert.throws(function() {
-        fu.match([[fu.eq(1), function(v) {}],
-                  [fu.eq(2), function(v) {}]],
-                  0);
-    }, "match throws if non of the matchers match");
-});
-
-QUnit.test("match applies matched function", function(assert) {
-    var result = fu.match([[fu.eq(1), fu.id],
-                           [fu.eq(2), fu.id]],
-                           2);
-
-    assert.strictEqual(result, 2);
-});
-
 QUnit.test("fold", function(assert) {
     assert.deepEqual(fu.fold(fu.id, [], []), []);
     assert.strictEqual(fu.fold(function(accum, x) { return accum + x; }, 0, [1,2,3,4]), 10);
+});
+
+QUnit.test("fold doesn't consume list", function(assert) {
+    var list = [1,2,3,4];
+    fu.fold(fu.id, [], list);
+    assert.deepEqual(list, [1,2,3,4]);
 });
 
 QUnit.test("map", function(assert) {
