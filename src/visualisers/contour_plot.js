@@ -94,11 +94,11 @@ define(['utils/func_utils',
         var x_c = this.sample_rect.x + this.x * this.cell_size; 
         var y_c = this.sample_rect.y + this.y * this.cell_size;
         
-        var bl = new Vector(x_c, y_c, f(x_c, y_c));
-        var br = new Vector(x_c + this.cell_size, y_c, f(x_c+this.cell_size, y_c));
-        var tl = new Vector(x_c, y_c + this.cell_size, f(x_c, y_c + this.cell_size));
-        var tr = new Vector(x_c + this.cell_size, y_c + this.cell_size, f(x_c + this.cell_size, y_c + this.cell_size));
-        var mid = new Vector(x_c + this.cell_size * 0.5, y_c + this.cell_size * 0.5, f(x_c + this.cell_size * 0.5, y_c + this.cell_size * 0.5));
+        var bl = new Vector(x_c, y_c, this.f(x_c, y_c));
+        var br = new Vector(x_c + this.cell_size, y_c, this.f(x_c+this.cell_size, y_c));
+        var tl = new Vector(x_c, y_c + this.cell_size, this.f(x_c, y_c + this.cell_size));
+        var tr = new Vector(x_c + this.cell_size, y_c + this.cell_size, this.f(x_c + this.cell_size, y_c + this.cell_size));
+        var mid = new Vector(x_c + this.cell_size * 0.5, y_c + this.cell_size * 0.5, this.f(x_c + this.cell_size * 0.5, y_c + this.cell_size * 0.5));
 
         return [new Shapes.Triangle(bl, br, mid), new Shapes.Triangle(tl, bl, mid), new Shapes.Triangle(tl, tr, mid), new Shapes.Triangle(tr, br, mid)];
     }
