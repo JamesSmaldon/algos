@@ -3,22 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
-    <script src="../src/utils/func_utils.js"></script>
-    <script src="../src/data_structs/counted_comparison.js"></script>
-    <script src="../src/data_structs/operations.js"></script>
-    <script src="../src/utils/data_utils.js"></script>
-    <script src="../src/algorithms/sorting.js"></script>
-    <script src="../src/visualisers/sorting.js"></script>
-    <script src="../src/visualisers/sort_visualiser.js"></script>
+    <script data-main="../src/requireconf.js" src="../../lib/require.js/2.2.0/require.js"></script>
 </head>
 <body>
     <select id="algo_select"></select>
     <select id="data_select"></select>
     <canvas id="sort_canvas" width="600" height="600"> </canvas>
-    <button id="next_step_button" onclick="next_step()">next</button>
-    <button id="prev_step_button" onclick="prev_step()">prev</button>
-    <button id="start_button" onclick="start_animate()">start</button>
-    <button id="stop_button" disabled="true" onclick="stop_animate()">stop</button>
+    <button id="next_step_button">next</button>
+    <button id="prev_step_button">prev</button>
+    <button id="start_button">start</button>
+    <button id="stop_button" disabled="true">stop</button>
     <button onclick="reset()">reset</button>
+
+    <script type="text/javascript">
+        require.config({
+            paths: {
+                domReady: '../lib/domready.js/2.0.1/domReady.min'
+            }
+});
+        require(['domReady', 'visualisers/sorting'], function(dr, sortingvis) {
+            dr(function() {
+                document.getElementById("next_step_button").onclick = sortingvis.next_step;
+                document.getElementById("prev_step_button").onclick = sortingvis.prev_step;
+                document.getElementById("start_button").onclick = sortingvis.start_animate;
+                document.getElementById("stop_button").onclick = sortingvis.stop_animate;
+
+                sortingvis.onload();
+            });
+        });
+    </script>
 </body>
 </html>

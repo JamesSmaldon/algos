@@ -1,4 +1,4 @@
-define([], function() {
+define(['utils/func_utils'], function(fu) {
     var handlers = {};
 
     var doOp = function(thing, op) {
